@@ -1,0 +1,84 @@
+name: bot-health
+
+# 5분마다 두 워커 /health 폴링.
+# - 200 OK → 통과
+# - 503 / 타임아웃 / 기타 → step fail → GitHub 가 자동으로 워크플로우 실패 알림 발송
+#   (이메일 + GitHub 모바일 앱 푸시. 별도 secrets 0 으로도 동작)
+# - ALERT_TG_BOT_TOKEN + ALERT_TG_CHAT_ID secrets 등록 시 텔레그램 알림 추가
+#
+# PUBLIC 리포라 GH Actions 무제한 무료. 코드에 민감 정보 없음.
+# 알림 봇은 모니터 대상 봇과 다른 봇이어야 함 (모니터 대상이 죽으면 그 봇으로 알림도 못 옴).
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  reversal-alert-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe /health
+        env:
+          URL: https://reversal-alert-bot.j-810.workers.dev/health
+        run: |
+          set +e
+          code=$(curl -sS -m 15 -o /tmp/body -w '%{http_code}' "$URL")
+          rc=$?
+          echo "exit=$rc http=$code"
+          cat /tmp/body 2>/dev/null || true
+          echo
+          if [ "$rc" -ne 0 ] || [ "$code" != "200" ]; then
+            echo "::error::reversal-alert-bot DOWN (exit=$rc http=$code)"
+            exit 1
+          fi
+      - name: Telegram alert (optional)
+        if: failure()
+        env:
+          TG_BOT: ${{ secrets.ALERT_TG_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.ALERT_TG_CHAT_ID }}
+        run: |
+          if [ -z "$TG_BOT" ] || [ -z "$TG_CHAT" ]; then
+            echo "alert secrets not configured — skip telegram (GitHub email/push 만 발송)"
+            exit 0
+          fi
+          curl -sS -X POST "https://api.telegram.org/bot$TG_BOT/sendMessage" \
+            -d "chat_id=$TG_CHAT" \
+            -d "parse_mode=HTML" \
+            --data-urlencode "text=🚨 <b>reversal-alert-bot DOWN</b>
+https://reversal-alert-bot.j-810.workers.dev/health
+run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  superbuysell-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe /health
+        env:
+          URL: https://superbuysell-bot.j-810.workers.dev/health
+        run: |
+          set +e
+          code=$(curl -sS -m 15 -o /tmp/body -w '%{http_code}' "$URL")
+          rc=$?
+          echo "exit=$rc http=$code"
+          cat /tmp/body 2>/dev/null || true
+          echo
+          if [ "$rc" -ne 0 ] || [ "$code" != "200" ]; then
+            echo "::error::superbuysell-bot DOWN (exit=$rc http=$code)"
+            exit 1
+          fi
+      - name: Telegram alert (optional)
+        if: failure()
+        env:
+          TG_BOT: ${{ secrets.ALERT_TG_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.ALERT_TG_CHAT_ID }}
+        run: |
+          if [ -z "$TG_BOT" ] || [ -z "$TG_CHAT" ]; then
+            echo "alert secrets not configured — skip telegram (GitHub email/push 만 발송)"
+            exit 0
+          fi
+          curl -sS -X POST "https://api.telegram.org/bot$TG_BOT/sendMessage" \
+            -d "chat_id=$TG_CHAT" \
+            -d "parse_mode=HTML" \
+            --data-urlencode "text=🚨 <b>superbuysell-bot DOWN</b>
+https://superbuysell-bot.j-810.workers.dev/health
+run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
