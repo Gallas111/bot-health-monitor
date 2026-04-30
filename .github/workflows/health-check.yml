@@ -42,12 +42,11 @@ jobs:
             echo "alert secrets not configured — skip telegram (GitHub email/push 만 발송)"
             exit 0
           fi
+          MSG="🚨 reversal-alert-bot DOWN | https://reversal-alert-bot.j-810.workers.dev/health | run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           curl -sS -X POST "https://api.telegram.org/bot$TG_BOT/sendMessage" \
             -d "chat_id=$TG_CHAT" \
             -d "parse_mode=HTML" \
-            --data-urlencode "text=🚨 <b>reversal-alert-bot DOWN</b>
-https://reversal-alert-bot.j-810.workers.dev/health
-run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            --data-urlencode "text=$MSG"
 
   superbuysell-bot:
     runs-on: ubuntu-latest
@@ -76,9 +75,8 @@ run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.r
             echo "alert secrets not configured — skip telegram (GitHub email/push 만 발송)"
             exit 0
           fi
+          MSG="🚨 superbuysell-bot DOWN | https://superbuysell-bot.j-810.workers.dev/health | run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           curl -sS -X POST "https://api.telegram.org/bot$TG_BOT/sendMessage" \
             -d "chat_id=$TG_CHAT" \
             -d "parse_mode=HTML" \
-            --data-urlencode "text=🚨 <b>superbuysell-bot DOWN</b>
-https://superbuysell-bot.j-810.workers.dev/health
-run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            --data-urlencode "text=$MSG"
