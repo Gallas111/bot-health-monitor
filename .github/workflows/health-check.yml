@@ -53,7 +53,7 @@ jobs:
     steps:
       - name: Probe /health
         env:
-          URL: https://superbuysell-bot.j-810.workers.dev/health
+          URL: https://superbuysell-deno.gallas111.deno.net/health
         run: |
           set +e
           code=$(curl -sS -m 15 -o /tmp/body -w '%{http_code}' "$URL")
@@ -75,7 +75,7 @@ jobs:
             echo "alert secrets not configured — skip telegram (GitHub email/push 만 발송)"
             exit 0
           fi
-          MSG="🚨 superbuysell-bot DOWN | https://superbuysell-bot.j-810.workers.dev/health | run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          MSG="🚨 superbuysell-bot DOWN | https://superbuysell-deno.gallas111.deno.net/health | run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           curl -sS -X POST "https://api.telegram.org/bot$TG_BOT/sendMessage" \
             -d "chat_id=$TG_CHAT" \
             -d "parse_mode=HTML" \
