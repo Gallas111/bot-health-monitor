@@ -1,13 +1,13 @@
 # bot-health-monitor
 
-5분마다 두 CF Worker 의 `/health` 를 폴링해 다운 시 알림을 발송하는 외부 모니터.
+5분마다 두 봇 `/health` 를 폴링해 다운 시 알림을 발송하는 외부 모니터.
 
 ## 모니터 대상
 
-| 봇 | URL |
-|---|---|
-| reversal-alert-bot | https://reversal-alert-bot.j-810.workers.dev/health |
-| superbuysell-bot   | https://superbuysell-bot.j-810.workers.dev/health |
+| 봇 | 인프라 | URL |
+|---|---|---|
+| reversal-alert-bot | Cloudflare Workers | https://reversal-alert-bot.j-810.workers.dev/health |
+| superbuysell-bot   | Deno Deploy        | https://superbuysell-deno.gallas111.deno.net/health |
 
 각 워커의 `/health` 가 200 이 아니면 (503 / 타임아웃 / 무응답) 워크플로우 step 이 fail 처리됨.
 
