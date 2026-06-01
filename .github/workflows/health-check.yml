@@ -37,6 +37,8 @@ jobs:
             url: https://dump-paper-bot.j-810.workers.dev/health
           - name: dump-paper-bot-v2
             url: https://dump-paper-bot-v2.j-810.workers.dev/health
+          - name: dipbuy-paper-bot
+            url: https://dipbuy-paper-bot.j-810.workers.dev/health
     steps:
       - name: Probe /health
         env:
