@@ -29,16 +29,9 @@ jobs:
             url: https://reversal-alert-bot.j-810.workers.dev/health
           - name: superbuysell-bot
             url: https://bybit-proxy.coinyeon.net/superbuysell-health
-          - name: pump-paper-bot
-            url: https://pump-paper-bot.j-810.workers.dev/health
-          - name: pump-paper-bot-v2
-            url: https://pump-paper-bot-v2.j-810.workers.dev/health
-          - name: dump-paper-bot
-            url: https://dump-paper-bot.j-810.workers.dev/health
-          - name: dump-paper-bot-v2
-            url: https://dump-paper-bot-v2.j-810.workers.dev/health
-          - name: dipbuy-paper-bot
-            url: https://dipbuy-paper-bot.j-810.workers.dev/health
+          # 페이퍼봇 5종(pump·pump-v2·dump·dump-v2·dipbuy)은 6/8 CF Worker 삭제 → EC2 paper-bots.service 단일 이전.
+          # 워커 URL은 전부 404 라 모니터에서 제거(오탐 메일 방지). 라이브니스는 systemd + 일일 TG 보고 + bot-watchdog 로 커버.
+          # 재감시 필요 시: EC2 watchdog 에 data.sqlite last-run 나이 체크 추가(공개 /health 신설 불필요).
     steps:
       - name: Probe /health
         env:
