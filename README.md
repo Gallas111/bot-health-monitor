@@ -7,7 +7,7 @@
 | 봇 | 인프라 | URL |
 |---|---|---|
 | reversal-alert-bot | Cloudflare Workers | https://reversal-alert-bot.j-810.workers.dev/health |
-| superbuysell-bot   | AWS EC2 Seoul (Caddy proxy) | https://bybit-proxy.coinyeon.net/superbuysell-health |
+| superbuysell-bot   | AWS EC2 Seoul (Caddy proxy) | https://proxy.goraestory.com/superbuysell-health |
 
 각 워커의 `/health` 가 200 이 아니면 (503 / 타임아웃 / 무응답) 워크플로우 step 이 fail 처리됨.
 
