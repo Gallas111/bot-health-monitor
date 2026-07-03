@@ -29,7 +29,8 @@ jobs:
           - name: reversal-alert-bot
             url: https://reversal-alert-bot.j-810.workers.dev/health
           - name: superbuysell-bot
-            url: https://bybit-proxy.coinyeon.net/superbuysell-health
+            # 2026-07-03: coinyeon 폐기 → EC2 게이트웨이 proxy.goraestory.com 로 이사 (구 bybit-proxy.coinyeon.net = DNS 소멸 → 000 오탐)
+            url: https://proxy.goraestory.com/superbuysell-health
           # 페이퍼봇 5종(pump·pump-v2·dump·dump-v2·dipbuy)은 6/8 CF Worker 삭제 → EC2 paper-bots.service 단일 이전.
           # 워커 URL은 전부 404 라 모니터에서 제거(오탐 메일 방지). 라이브니스는 systemd + 일일 TG 보고 + bot-watchdog 로 커버.
           # 재감시 필요 시: EC2 watchdog 에 data.sqlite last-run 나이 체크 추가(공개 /health 신설 불필요).
