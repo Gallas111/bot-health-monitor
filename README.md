@@ -1,13 +1,14 @@
 # bot-health-monitor
 
-5분마다 두 봇 `/health` 를 폴링해 다운 시 알림을 발송하는 외부 모니터.
+5분마다 대상 봇 `/health` 를 폴링해 다운 시 알림을 발송하는 외부 모니터.
 
 ## 모니터 대상
 
 | 봇 | 인프라 | URL |
 |---|---|---|
-| reversal-alert-bot | Cloudflare Workers | https://reversal-alert-bot.j-810.workers.dev/health |
 | superbuysell-bot   | AWS EC2 Seoul (Caddy proxy) | https://proxy.goraestory.com/superbuysell-health |
+
+> reversal-alert-bot 은 2026-07-14 폐기(대표 지시)로 CF 워커 삭제 + 모니터 대상에서 제거됨.
 
 각 워커의 `/health` 가 200 이 아니면 (503 / 타임아웃 / 무응답) 워크플로우 step 이 fail 처리됨.
 

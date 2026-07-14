@@ -26,8 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: reversal-alert-bot
-            url: https://reversal-alert-bot.j-810.workers.dev/health
+          # reversal-alert-bot: 2026-07-14 폐기(대표 지시) — CF 워커 삭제, 모니터 대상에서 제거.
           - name: superbuysell-bot
             # 2026-07-03: coinyeon 폐기 → EC2 게이트웨이 proxy.goraestory.com 로 이사 (구 bybit-proxy.coinyeon.net = DNS 소멸 → 000 오탐)
             url: https://proxy.goraestory.com/superbuysell-health
